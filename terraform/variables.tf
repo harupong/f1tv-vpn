@@ -16,6 +16,11 @@ variable "instance_count" {
   type    = number
 }
 
+variable "aws_region" {
+  description = "AWS region"
+  type    = string
+}
+
 variable "aws_access_key" {
   description = "AWS Access Key"
   type = string
