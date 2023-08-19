@@ -6,7 +6,7 @@ terraform {
     }
   }
 
-    backend "s3" {
+  backend "s3" {
     bucket = "terraform-f1tv-vpn"
     key    = "state/terraform.tfstate"
     region = "us-west-2"
@@ -16,7 +16,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-west-2"
+  region     = "us-west-2"
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
 }
@@ -29,8 +29,8 @@ provider "aws" {
 # }
 
 resource "aws_lightsail_instance" "f1tv_vpn" {
-  count             = var.instance_count
-  name              = "f1tv-race${count.index}-portland"
+  count = var.instance_count
+  name  = "f1tv-race${count.index}-portland"
   # availability_zone = random_shuffle.shuffled_az.result[count.index]
   availability_zone = "us-west-2a"
   blueprint_id      = "ubuntu_22_04"
@@ -41,12 +41,12 @@ resource "aws_lightsail_instance" "f1tv_vpn" {
 
   provisioner "remote-exec" {
     connection {
-      type = "ssh"
-      user = "ubuntu"
-      host = self.public_ip_address
+      type        = "ssh"
+      user        = "ubuntu"
+      host        = self.public_ip_address
       private_key = file("${var.lightsail_key_pair_path}")
     }
-    
+
     inline = [
       "sudo hostnamectl set-hostname ${self.name}",
       "curl -fsSL https://tailscale.com/install.sh | sh",
