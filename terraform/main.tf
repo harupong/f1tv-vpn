@@ -30,7 +30,7 @@ provider "aws" {
 
 resource "aws_lightsail_instance" "f1tv_vpn" {
   count = var.instance_count
-  name  = "f1tv-race${count.index}-portland"
+  name  = "f1tv-main${count.index}-portland"
   # availability_zone = random_shuffle.shuffled_az.result[count.index]
   availability_zone = "us-west-2a"
   blueprint_id      = "ubuntu_22_04"
@@ -53,7 +53,7 @@ resource "aws_lightsail_instance" "f1tv_vpn" {
       "echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf",
       "echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf",
       "sudo sysctl -p /etc/sysctl.conf",
-      "sudo tailscale up --authkey ${var.tailscale_api_key} --advertise-exit-node"
+      "sudo tailscale up --authkey ${var.tailscale_api_key} --advertise-exit-node --ssh"
     ]
   }
 }
