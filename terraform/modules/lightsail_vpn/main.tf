@@ -1,8 +1,7 @@
 
 resource "aws_lightsail_instance" "f1tv_vpn" {
-  count = var.instance_count
-  name  = var.instance_name
-  # availability_zone = random_shuffle.shuffled_az.result[count.index]
+  count             = var.instance_count
+  name              = var.instance_name
   availability_zone = var.availability_zone
   blueprint_id      = "ubuntu_22_04"
   bundle_id         = "nano_3_0"
