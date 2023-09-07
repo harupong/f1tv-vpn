@@ -1,4 +1,3 @@
-
 resource "aws_lightsail_instance" "f1tv_vpn" {
   count             = var.instance_count
   name              = var.instance_name
@@ -26,5 +25,22 @@ resource "aws_lightsail_instance" "f1tv_vpn" {
       "sudo sysctl -p /etc/sysctl.conf",
       "sudo tailscale up --authkey ${var.tailscale_api_key} --advertise-exit-node --ssh"
     ]
+  }
+}
+
+resource "aws_lightsail_instance_public_ports" "tailscale" {
+  count         = length(aws_lightsail_instance.f1tv_vpn)
+  instance_name = aws_lightsail_instance.f1tv_vpn[count.index].name
+
+  port_info {
+    protocol  = "tcp"
+    from_port = 22
+    to_port   = 22
+  }
+
+  port_info {
+    protocol  = "udp"
+    from_port = 41641
+    to_port   = 41641
   }
 }
