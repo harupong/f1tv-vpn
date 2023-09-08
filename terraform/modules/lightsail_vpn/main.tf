@@ -1,10 +1,13 @@
 resource "aws_lightsail_instance" "f1tv_vpn" {
   count             = var.instance_count
+  
   name              = var.instance_name
   availability_zone = var.availability_zone
   blueprint_id      = "ubuntu_22_04"
   bundle_id         = "nano_3_0"
   key_pair_name     = "key"
+  user_data         = file("${path.module}/user_data.sh")
+
   tags = {
     "f1tv" = ""
   }
