@@ -18,8 +18,30 @@
 ## AWS Lightsailの手順
 TerraformでLightsailのインスタンス作成と、Tailscaleのインストールを自動化する。
 
+1. `terraform/env/[region]`ディレクトリに移動する
+2. `terraform apply`を実行する（インスタンスを削除する場合は`terraform destroy`）
+
+### Lightsailのリージョンを追加する手順
+```
+cd terraform/env/
+mkdir [region-name] && cd [region-name]
+cp ../us-west-2/* .
+mv terraform.tfvars.example terraform.tfvars
+vi backend.tf terraform.tfvars
+```
+
+設定ファイルが2つ開くので、リージョンにあわせてパラメーターを編集する。
+
+- backend.tf -> S3のバケット名とリージョン
+- terraform.tfvars -> 全項目
+
+また、そのために、以下のような作業が必要になる。
+
+- 対象のリージョンに、S3のバケットを作る 命名規則 terraform-f1tv-vpn-[リージョン名]
+- デフォルトのSSHキーをローカルにダウンロードしておく
+
 ## Racknerd/Ethernet Serversの手順
 AnsibleでTailscaleの導入を自動化する。インスタンス作成は手動でおこなう。
 
 1. 起動したインスタンスのIPアドレスを `hosts` に追記する。
-4. `ansible-playbook -i hosts playbook.yml`を実行してtailscaleを導入する。
+2. `ansible-playbook -i hosts playbook.yml`を実行してtailscaleを導入する。
