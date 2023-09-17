@@ -18,7 +18,7 @@ module "lightsail_vpn" {
   source = "../../modules/lightsail_vpn"
 
   count                   = var.instance_count
-  instance_name           = "f1tv-main${count.index}-portland"
+  instance_name           = "${var.instance_name_prefix}-${count.index}"
   availability_zone       = var.aws_availability_zone
   lightsail_key_pair_path = var.lightsail_key_pair_path
   tailscale_api_key       = var.tailscale_api_key

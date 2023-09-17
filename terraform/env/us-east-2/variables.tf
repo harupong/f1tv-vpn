@@ -37,3 +37,8 @@ variable "aws_availability_zone" {
   description = "AWS Availability Zone"
   type        = string
 }
+
+variable "instance_name_prefix" {
+  description = "prefix for instance name"
+  type        = string
+}
