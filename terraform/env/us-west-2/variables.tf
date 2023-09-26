@@ -12,7 +12,6 @@ variable "lightsail_key_pair_path" {
 
 variable "instance_count" {
   description = "number of Lightsail instances to launch. If not specified, 1 instance will be launched"
-  default     = 1
   type        = number
 }
 
