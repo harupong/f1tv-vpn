@@ -1,0 +1,23 @@
+---
+- name: copy utils.crontab
+  ansible.builtin.copy:
+    src: ./utils
+    dest: /root/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Make it executable
+  ansible.builtin.file:
+    path: /root/utils/healthchecks.sh
+    mode: '0744'
+
+- name: install jq
+  ansible.builtin.apt:
+    name: jq
+    state: present
+
+- name: configure crontab
+  shell:
+    cmd: "crontab utils.crontab"
+    chdir: /root/utils/

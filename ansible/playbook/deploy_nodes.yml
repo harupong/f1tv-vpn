@@ -1,0 +1,14 @@
+---
+- name: deploy f1vpn nodes
+  hosts: all
+  user: root
+  vars:
+    tailscale_conf_path: "{{ lookup('env', 'PWD') }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
+    vnstat_conf_path: "{{ lookup('env', 'PWD') }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
+
+  roles:
+    - role: hostname
+    - role: geerlingguy.docker
+    - role: vnstat
+    - role: docker
+    - role: cron

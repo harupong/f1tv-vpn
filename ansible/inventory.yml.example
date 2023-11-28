@@ -1,0 +1,9 @@
+---
+all:
+  vars:
+    ansible_user: root
+  hosts:
+    <hostname>: #fill in actual hostname for node
+      ansible_host: <ip address>
+      ansible_password: <root password>
+

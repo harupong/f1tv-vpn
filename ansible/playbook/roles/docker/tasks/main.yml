@@ -1,0 +1,13 @@
+---
+- name: copy docker compose file
+  ansible.builtin.copy:
+    src: ./docker
+    dest: /root/
+    owner: root
+    group: root
+    mode: '644'
+
+- name: Run container
+  shell:
+    cmd: "docker compose up -d"
+    chdir: /root/docker/

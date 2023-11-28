@@ -1,0 +1,30 @@
+name: f1vpn_node
+services:
+  tailscale:
+      container_name: tailscaled
+      restart: unless-stopped
+      volumes:
+          - /var/lib/tailscale:/var/lib/tailscale
+          - /dev/net/tun:/dev/net/tun
+      network_mode: host
+      cap_add:
+          - NET_ADMIN
+          - NET_RAW
+      environment:
+          - TS_AUTHKEY=${TS_AUTHKEY}
+          - TS_USERSPACE=0
+          - TS_STATE_DIR=/var/lib/tailscale
+          - TS_EXTRA_ARGS=--advertise-exit-node --ssh #no quotes needed
+      image: tailscale/tailscale:stable
+
+  vnstat:
+    image: vergoh/vnstat:latest
+    container_name: vnstat
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /var/lib/vnstat:/var/lib/vnstat
+    environment:
+      - HTTP_PORT=0
