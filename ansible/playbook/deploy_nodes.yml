@@ -7,7 +7,7 @@
     vnstat_conf_path: "{{ lookup('env', 'PWD') }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
 
   roles:
-    - role: hostname
+    - role: init
     - role: geerlingguy.docker
     - role: vnstat
     - role: docker
