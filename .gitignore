@@ -1,6 +1,9 @@
 ### Project specific ###
-others/
 .DS_Store
+ansible/playbook/utils/.env
+ansible/playbook/docker/.env
+ansible/*.tar.gz
+ansible/inventory.yml
 
 ### Terraform ###
 # Created by https://www.toptal.com/developers/gitignore/api/terraform
@@ -42,4 +45,3 @@ override.tf.json
 terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform
-utils/.env
