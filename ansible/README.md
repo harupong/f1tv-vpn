@@ -1,8 +1,3 @@
-reserve-seattle-rnd
-172.245.108.57
-Root/Admin Password: 5046Rzy1ah1CNWGAnz
-
-
 
 
 ## initial setup
