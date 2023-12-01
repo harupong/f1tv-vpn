@@ -1,0 +1,24 @@
+---
+- hosts: all
+  tasks:
+  - name: make backup file of tailscale conf dir
+    community.general.archive:
+      path: /var/lib/tailscale
+      dest: "{{ ansible_env.HOME }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
+
+  - name: fetch tailscale backup file from remote to local pwd 
+    ansible.builtin.fetch:
+      src: "{{ ansible_env.HOME }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
+      dest: ../
+      flat: true
+
+  - name: make backup file of vnstat conf dir
+    community.general.archive:
+      path: /var/lib/vnstat
+      dest: "{{ ansible_env.HOME }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
+
+  - name: fetch vnstat backup file from remote to local pwd 
+    ansible.builtin.fetch:
+      src: "{{ ansible_env.HOME }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
+      dest: ../
+      flat: true
