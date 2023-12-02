@@ -26,6 +26,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - /var/lib/vnstat:/var/lib/vnstat
+      - ./vnstat.conf:/etc/vnstat.conf
     environment:
       - HTTP_PORT=0
 
