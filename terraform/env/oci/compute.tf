@@ -11,18 +11,13 @@ resource "oci_core_instance" "ubuntu_instance" {
     }
 
     # Optional
-    display_name = "main-oci-${count.index}"
+    display_name = "main-sanjose-oci-${count.index}"
     create_vnic_details {
         assign_public_ip = true
         subnet_id = var.subnet_id
     }
     metadata = {
         ssh_authorized_keys = file(var.ssh_authorized_keys)
-        user_data = "${base64encode(
-            templatefile("../../modules/lightsail_vpn/user_data.sh", {
-                tailscale_api_key = var.tailscale_api_key,
-                name = "main-oci-${count.index}"}
-        ))}"
     } 
     preserve_boot_volume = false
 }

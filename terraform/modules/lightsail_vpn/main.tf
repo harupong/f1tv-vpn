@@ -5,7 +5,7 @@ resource "aws_lightsail_instance" "f1tv_vpn" {
   availability_zone = var.availability_zone
   blueprint_id      = "ubuntu_22_04"
   bundle_id         = "nano_3_0"
-  key_pair_name     = "key"
+  key_pair_name     = "id_ed25519"
   user_data         = templatefile("${path.module}/user_data.sh", {
     tailscale_api_key = var.tailscale_api_key,
     name = var.instance_name
