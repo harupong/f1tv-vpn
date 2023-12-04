@@ -1,0 +1,12 @@
+---
+- name: is tailscale conf file available?
+  delegate_to: localhost
+  ansible.builtin.stat:
+    path: "{{ tailscale_conf_path }}"
+  register: tailscale_file
+
+- name: expand tailscale tar.gz if it exists
+  ansible.builtin.unarchive:
+    src: "{{ tailscale_conf_path }}"
+    dest: /var/lib/
+  when: tailscale_file.stat.exists
