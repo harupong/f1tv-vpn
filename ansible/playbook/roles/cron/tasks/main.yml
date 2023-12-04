@@ -12,9 +12,11 @@
     path: /root/utils/healthchecks.sh
     mode: '0744'
 
-- name: install jq
+- name: install deps for cron jobs
   ansible.builtin.apt:
-    name: jq
+    pkg:
+      - jq
+      - curl
     state: present
 
 - name: configure crontab
