@@ -9,11 +9,14 @@
   roles:
     - role: init
     - role: geerlingguy.docker
+      vars:
+        ansible_become: yes
     - role: tailscale
     - role: artis3n.tailscale
       vars:
         tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
         tailscale_args: "--ssh --advertise-exit-node"
+        ansible_become: yes
     - role: vnstat
     - role: docker
     - role: cron

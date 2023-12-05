@@ -6,6 +6,7 @@
   register: tailscale_file
 
 - name: expand tailscale tar.gz if it exists
+  become: yes
   ansible.builtin.unarchive:
     src: "{{ tailscale_conf_path }}"
     dest: /var/lib/

@@ -2,17 +2,16 @@
 - name: copy utils.crontab
   ansible.builtin.copy:
     src: ./utils
-    dest: /root/
-    owner: root
-    group: root
+    dest: "{{ ansible_env.HOME }}/"
     mode: '0644'
 
 - name: Make it executable
   ansible.builtin.file:
-    path: /root/utils/healthchecks.sh
+    path: "{{ ansible_env.HOME }}/utils/healthchecks.sh"
     mode: '0744'
 
 - name: install deps for cron jobs
+  become: yes
   ansible.builtin.apt:
     pkg:
       - jq
@@ -22,4 +21,4 @@
 - name: configure crontab
   shell:
     cmd: "crontab utils.crontab"
-    chdir: /root/utils/
+    chdir: "{{ ansible_env.HOME }}/utils/"

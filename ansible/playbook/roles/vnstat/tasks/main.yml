@@ -6,8 +6,9 @@
   register: db_file
 
 - name: expand vnstat tar.gz if it exists on vps
+  become: yes
   ansible.builtin.unarchive:
     src: "{{ vnstat_conf_path }}"
-    dest: /
+    dest: /var/lib/
     # extra_opts: [--same-owner]
   when: db_file.stat.exists

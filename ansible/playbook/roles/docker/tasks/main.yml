@@ -2,12 +2,10 @@
 - name: copy docker compose file
   ansible.builtin.copy:
     src: ./docker
-    dest: /root/
-    owner: root
-    group: root
+    dest: "{{ ansible_env.HOME }}/"
     mode: '644'
 
 - name: Run container
   shell:
-    cmd: "docker compose up -d"
-    chdir: /root/docker/
+    cmd: "sudo docker compose up -d"
+    chdir: "{{ ansible_env.HOME }}/docker"
