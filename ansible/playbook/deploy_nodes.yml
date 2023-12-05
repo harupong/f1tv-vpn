@@ -5,6 +5,7 @@
   vars:
     tailscale_conf_path: "{{ lookup('env', 'PWD') }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
     vnstat_conf_path: "{{ lookup('env', 'PWD') }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
+    tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
 
   roles:
     - role: init
@@ -14,7 +15,7 @@
     - role: tailscale
     - role: artis3n.tailscale
       vars:
-        tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
+        tailscale_authkey: "{{ tailscale_authkey }}"
         tailscale_args: "--ssh --advertise-exit-node"
         ansible_become: yes
     - role: vnstat

@@ -1,4 +1,9 @@
 ---
+- name: make sure that TAILSCALE_AUTHKEY env variable is set
+  ansible.builtin.fail:
+    msg: TAILSCALE_AUTHKEY environment variable must be set properly
+  when: tailscale_authkey | length == 0
+
 - name: change hostname
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
