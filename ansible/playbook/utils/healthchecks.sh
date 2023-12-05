@@ -25,6 +25,6 @@ if [ -z "${bw_url}" ]; then
 fi
 
 ## Check fails if monthly tx/rx total is greater than 900GB
-MONTHLY_BW_USAGE=$(docker exec vnstat vnstat --oneline b | expr $(cut -d ";" -f 11) / 1024 / 1024 / 1024)
+MONTHLY_BW_USAGE=$(sudo docker exec vnstat vnstat --oneline b | expr $(cut -d ";" -f 11) / 1024 / 1024 / 1024)
 if [ ${MONTHLY_BW_USAGE} -gt 900 ]; then bw_url=${bw_url}/fail; fi
 curl -m 10 --retry 5 --data-raw "Bandwidth used: ${MONTHLY_BW_USAGE} GB" ${bw_url}
