@@ -1,9 +1,13 @@
 ### Project specific ###
 .DS_Store
+ansible/.env
+ansible/inventory.yml
+ansible/*.tar.gz
+ansible/backup/
+ansible/playbook/debug.yml
 ansible/playbook/utils/.env
 ansible/playbook/docker/.env
-ansible/*.tar.gz
-ansible/inventory.yml
+
 
 ### Terraform ###
 # Created by https://www.toptal.com/developers/gitignore/api/terraform
