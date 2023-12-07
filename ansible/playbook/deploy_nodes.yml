@@ -1,21 +1,25 @@
 ---
+- name: init
+  hosts: all
+  roles:
+    - role: init
+      vars:
+        ansible_become: yes
+
 - name: deploy f1vpn nodes
   hosts: all
-  user: root
   vars:
     tailscale_conf_path: "{{ lookup('env', 'PWD') }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
     vnstat_conf_path: "{{ lookup('env', 'PWD') }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
-    tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
 
   roles:
-    - role: init
     - role: geerlingguy.docker
       vars:
         ansible_become: yes
     - role: tailscale
     - role: artis3n.tailscale
       vars:
-        tailscale_authkey: "{{ tailscale_authkey }}"
+        tailscale_authkey: tailscale_authkey
         tailscale_args: "--ssh --advertise-exit-node"
         ansible_become: yes
     - role: vnstat
