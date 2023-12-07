@@ -8,7 +8,7 @@
 - name: change hostname
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
-    use: systemd
+    use: debian
 
 - name: Add user
   ansible.builtin.user:
