@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+  - name: Run "apt update" and "apt upgrade".
+    become: yes
+    ansible.builtin.apt:
+      upgrade: safe
+      update_cache: yes
+
+  - name: Reboot server.
+    become: yes
+    ansible.builtin.reboot:
+      boot_time_command: "uptime --since ; cat /proc/sys/kernel/random/boot_id"
