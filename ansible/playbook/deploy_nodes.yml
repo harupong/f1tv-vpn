@@ -1,16 +1,27 @@
 ---
 - name: init
   hosts: all
+  vars_prompt:
+    - name: "new_username"
+      prompt: "Enter username for tailscale deployment"
+      private: no
+
   roles:
     - role: init
       vars:
         ansible_become: yes
+
+  tasks:
+    - name: Save "new_username" variable as facts, in order to pass it to next play.
+      set_fact:
+        stored_username: "{{ new_username }}"
 
 - name: deploy f1vpn nodes
   hosts: all
   vars:
     tailscale_conf_path: "{{ lookup('env', 'PWD') }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
     vnstat_conf_path: "{{ lookup('env', 'PWD') }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
+    new_username: "{{ hostvars[inventory_hostname].stored_username }}"
 
   roles:
     - role: geerlingguy.docker
