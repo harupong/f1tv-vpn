@@ -1,4 +1,10 @@
 ---
+- name: Reboot the server to make tun device available for OpenVZ based VPS.
+  ansible.builtin.reboot:
+    boot_time_command: "uptime --since ; cat /proc/sys/kernel/random/boot_id"
+  become: yes
+  when: inventory_hostname in groups['openvz']
+
 - name: is tailscale conf file available?
   delegate_to: localhost
   ansible.builtin.stat:
