@@ -13,6 +13,7 @@
 - name: Add user
   ansible.builtin.user:
     name: "{{ new_username }}"
+    shell: /bin/bash
     state: present
     createhome: yes
 
