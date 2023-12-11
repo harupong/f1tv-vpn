@@ -4,6 +4,13 @@
     tailscale_path: "{{ ansible_env.HOME }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
     vnstat_path: "{{ ansible_env.HOME }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
 
+  pre_tasks:
+  - name: Ensure that all necessary environment variables are loaded
+    ansible.builtin.assert:
+      that:
+        - new_username | length > 0
+      fail_msg: "run `source ./.env` and load environment variables"
+
   tasks:
   - name: make backup file of tailscale conf dir
     become: yes
