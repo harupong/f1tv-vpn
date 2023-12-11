@@ -1,6 +1,14 @@
 ---
 - name: init
   hosts: all
+  pre_tasks:
+  - name: Ensure that all necessary environment variables are loaded
+    ansible.builtin.assert:
+      that:
+        - tailscale_authkey | length > 0
+        - new_username | length > 0
+      fail_msg: "run `source ./.env` and load environment variables"
+
   roles:
     - role: init
       vars:
