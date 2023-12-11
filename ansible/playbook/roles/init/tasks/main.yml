@@ -4,6 +4,10 @@
     name: "{{ inventory_hostname }}"
     use: debian
 
+- name: Set timezone to Asia/Tokyo.
+  community.general.timezone:
+    name: Asia/Tokyo
+
 - name: Add user
   ansible.builtin.user:
     name: "{{ new_username }}"
