@@ -1,6 +1,6 @@
 ---
 # https://qiita.com/hiroyuki_onodera/items/11ea24b40d774b2df755
 ansible_user: >-
-  {%- if ansible_play_name  == "init" -%} root
-  {%- else -%} {{ new_username }}
+  {%- if ansible_play_name  == "deploy f1vpn nodes" -%} {{ new_username }}
+  {%- else -%} root
   {%- endif -%}
