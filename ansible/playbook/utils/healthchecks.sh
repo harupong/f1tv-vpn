@@ -14,7 +14,8 @@ if [ -z "${ts_url}" ]; then
 fi
 
 ## if tailscale fails, there is no ping made
-tailscale status && curl -m 10 --retry 5 ${ts_url}
+SERVER_STATS=$(top -n 1 -b -d 2 | head -n5)
+tailscale status && curl -m 10 --retry 5 --data-raw "${SERVER_STATS}" ${ts_url}
 
 ####################################
 # CHECK FOR SERVER BANDWIDTH USAGE
