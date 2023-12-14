@@ -1,9 +1,26 @@
 ---
 all:
-  vars:
-    ansible_user: root
-  hosts:
-    <hostname>: #fill in actual hostname for node
-      ansible_host: <ip address>
-      ansible_password: <root password>
 
+<provider name1>:
+  hosts:
+    <hostname>:
+      ansible_host: <host ip address>
+
+<provider name2>:
+  hosts:
+    <hostname>:
+      ansible_host: <host ip address>
+
+<provider name3>:
+  hosts:
+    <hostname>:
+      ansible_host: <host ip address>
+
+vps: # include VPS providers that should use "root" user for "init" play.
+  children:
+    <provider name1>:
+    <provider name2>:
+
+openvz: # include OpenVZ VPS providers as it needs extra options for reboot
+  children:
+    <provider name2>:
