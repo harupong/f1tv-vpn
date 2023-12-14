@@ -35,3 +35,11 @@
       src: "{{ vnstat_path }}"
       dest: "../backup/{{ '%Y%m%d' | strftime }}/"
       flat: true
+
+  - name: Copy backup files to Google Drive.
+    delegate_to: localhost
+    run_once: yes
+    ansible.builtin.shell:
+      cmd: rclone copy --exclude ".DS_Store" --progress backup/ google_drive_f1vpn:f1vpn/backup/
+      chdir: ../
+    
