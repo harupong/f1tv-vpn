@@ -1,0 +1,39 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Deploy to all nodes",
+            "type": "shell",
+            "command": [
+                "source ./.env ;",
+                "ansible-playbook -i inventory.yml playbook/deploy_nodes.yml"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/ansible"
+            }
+        },
+        {
+            "label": "Backup all nodes",
+            "type": "shell",
+            "command": [
+                "source ./.env ;",
+                "ansible-playbook -i inventory.yml playbook/backup.yml"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/ansible"
+            },
+        },
+        {
+            "label": "Upgrade apt packages on all nodes",
+            "type": "shell",
+            "command": [
+                "ansible-playbook -i inventory.yml playbook/apt_upgrade.yml"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/ansible"
+            },
+        },
+    ]
+}
