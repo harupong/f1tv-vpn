@@ -1,3 +1,5 @@
+# https://oracle-japan.github.io/ocitutorials/intermediates/terraform/
+
 resource "oci_core_instance" "ubuntu_instance" {
     # Required
     count = var.instance_count
