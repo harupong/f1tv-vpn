@@ -33,3 +33,17 @@
     - role: vnstat
     - role: docker
     - role: cron
+    - role: geerlingguy.firewall
+      vars:
+        firewall_allowed_tcp_ports:
+          - "22"
+        firewall_allowed_udp_ports:
+          - "41641"
+        ansible_become: yes
+
+  post_tasks:
+    - name: Restart tailscaled.
+      become: yes
+      ansible.builtin.systemd_service:
+        state: restarted
+        name: tailscaled
