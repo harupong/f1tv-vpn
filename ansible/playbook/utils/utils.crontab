@@ -5,3 +5,6 @@
 
 # healthchecks.io checks are supposed to be in 10-minute interval
 */10 * * * * cd $HOME/utils && . ./.env && ./healthchecks.sh
+
+# uptime-kuma checks
+*/10 * * * * cd $HOME/utils && ./uptimekuma.sh

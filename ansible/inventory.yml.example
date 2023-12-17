@@ -5,16 +5,25 @@ all:
   hosts:
     <hostname>:
       ansible_host: <host ip address>
+      BW_ID: # push id for uptime kuma bw monitor
+      DF_ID: # push id for uptime kuma df monitor
+      TS_ID: # push id for uptime kuma tailscale monitor
 
 <provider name2>:
   hosts:
     <hostname>:
       ansible_host: <host ip address>
+      BW_ID: # push id for uptime kuma bw monitor
+      DF_ID: # push id for uptime kuma df monitor
+      TS_ID: # push id for uptime kuma tailscale monitor
 
 <provider name3>:
   hosts:
     <hostname>:
       ansible_host: <host ip address>
+      BW_ID: # push id for uptime kuma bw monitor
+      DF_ID: # push id for uptime kuma df monitor
+      TS_ID: # push id for uptime kuma tailscale monitor
 
 vps: # include VPS providers that should use "root" user for "init" play.
   children:

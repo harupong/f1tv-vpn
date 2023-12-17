@@ -27,3 +27,11 @@
     insertafter: EOF
     line: "{{ new_username }} ALL=(ALL:ALL) NOPASSWD:ALL"
     validate: 'visudo -cf %s'
+
+- name: Add env vars for uptime kuma to remote's profile
+  ansible.builtin.blockinfile:
+    path: /etc/profile
+    block: |
+      export TS_ID="{{ TS_ID }}"
+      export DF_ID="{{ DF_ID }}"
+      export BW_ID="{{ BW_ID }}"
