@@ -26,12 +26,22 @@ tailscale_status() {
         tailscale netcheck |
         head -n11 |
         tail -n1 |
-        awk -F ': |(m|µ)s' '{print $2}')
-    state=${state%.*}
+        grep -oP '\d+(\.\d+)?(m|µ)s')
 
+    # remove unit such as ms/μs and decimal numbers
+    unit=${state: -2:1}
+    if [[ "$unit" != "m" ]]; then
+        state=1
+    fi
+    if [[ $state == *.* ]]; then
+        state=${state%.*}
+    else
+        state=${state%ms}
+    fi
+    
     if [ $state -ge 0 ]; then
         local service_status="up"
-        local message="Ping to Closest DERP server returned in ${state} seconds."
+        local message="Ping to Closest DERP server returned in ${state} milliseconds."
     else
         local service_status="down"
         local message="Ping to Closest DERP server failed"
