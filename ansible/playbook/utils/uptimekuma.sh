@@ -5,7 +5,9 @@ set -ex
 push_url="https://f1vpn-uptime-kuma.fly.dev/api/push/"
 
 df_status() {
-    local percentage=$(df --total --human-readable --exclude-type=tmpfs | tail -n1 | awk '{printf $5}')
+    local percentage=$(df --total --human-readable --exclude-type=tmpfs |
+        tail -n1 |
+        awk '{printf $5}')
     local threshold="80"  # 80%
     local number=${percentage%\%*}
     local message="Used disk space is ${number}%" 
@@ -20,7 +22,11 @@ df_status() {
 }
 
 tailscale_status() {
-    local state=$(tailscale status > /dev/null && tailscale netcheck | head -n11 | tail -n1 | awk -F ': |(m|µ)s' '{print $2}')
+    local state=$(tailscale status > /dev/null &&
+        tailscale netcheck |
+        head -n11 |
+        tail -n1 |
+        awk -F ': |(m|µ)s' '{print $2}')
     state=${state%.*}
 
     if [ $state -ge 0 ]; then
@@ -35,7 +41,8 @@ tailscale_status() {
 }
 
 bw_status() {
-    local usage=$(sudo docker exec vnstat vnstat --oneline b | expr $(cut -d ";" -f 11) / 1024 / 1024 / 1024)
+    local usage=$(sudo docker exec vnstat vnstat --oneline b |
+        expr $(cut -d ";" -f 11) / 1024 / 1024 / 1024)
     local threshold="900"  # 900GB
     local message="Used bandwidth is ${usage}GB" 
 
@@ -48,7 +55,7 @@ bw_status() {
     curl_command ${service_status} "${message}" ${usage} ${BW_ID}
 }
 
-# curl_command <service_status> <message> <ping> <uptimekuma_id>
+# curl_command <service_status> "<message>" <ping> <uptimekuma_id>
 curl_command() {
     curl \
         --get \
@@ -60,6 +67,6 @@ curl_command() {
         > /dev/null
 }
 
+bw_status
 df_status
 tailscale_status
-bw_status
