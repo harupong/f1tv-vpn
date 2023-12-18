@@ -4,29 +4,31 @@ set -ex
 
 push_url="https://f1vpn-uptime-kuma.fly.dev/api/push/"
 
-df_status() {
-    local percentage=$(df --total --human-readable --exclude-type=tmpfs |
-        tail -n1 |
-        awk '{printf $5}')
+function df_status() {
+    local percentage
+    percentage=$(df --total --human-readable --exclude-type=tmpfs \
+        | tail -n1 \
+        | awk '{printf $5}')
     local threshold="80"  # 80%
     local number=${percentage%\%*}
     local message="Used disk space is ${number}%" 
 
-    if [ $number -lt $threshold ]; then
+    if [[ $number -lt $threshold ]]; then
         local service_status="up"
     else
         local service_status="down"
     fi
 
-    curl_command ${service_status} "${message}" ${number} ${DF_ID}
+    curl_command "${service_status}" "${message}" "${number}" "${DF_ID}"
 }
 
-tailscale_status() {
-    local state=$(tailscale status > /dev/null &&
-        tailscale netcheck |
-        head -n11 |
-        tail -n1 |
-        grep -oP '\d+(\.\d+)?(m|µ)s')
+function tailscale_status() {
+    local state
+    state=$(tailscale status > /dev/null \
+        && tailscale netcheck \
+        | head -n11 \
+        | tail -n1 \
+        | grep -oP '\d+(\.\d+)?(m|µ)s')
 
     # remove unit such as ms/μs and decimal numbers
     unit=${state: -2:1}
@@ -39,7 +41,7 @@ tailscale_status() {
         state=${state%ms}
     fi
     
-    if [ $state -ge 0 ]; then
+    if [[ $state -ge 0 ]]; then
         local service_status="up"
         local message="Ping to Closest DERP server returned in ${state} milliseconds."
     else
@@ -47,26 +49,28 @@ tailscale_status() {
         local message="Ping to Closest DERP server failed"
     fi
 
-    curl_command ${service_status} "${message}" ${state} ${TS_ID}
+    curl_command "${service_status}" "${message}" "${state}" "${TS_ID}"
 }
 
-bw_status() {
-    local usage=$(sudo docker exec vnstat vnstat --oneline b |
-        expr $(cut -d ";" -f 11) / 1024 / 1024 / 1024)
+function bw_status() {
+    local usage
+    usage=$(sudo docker exec vnstat vnstat --oneline b \
+        | cut -d';' -f11 \
+        | awk '{ printf "%d", $1 / (1024 * 1024 * 1024) }')
     local threshold="900"  # 900GB
     local message="Used bandwidth is ${usage}GB" 
 
-    if [ $usage -lt $threshold ]; then
+    if [[ $usage -lt $threshold ]]; then
         local service_status="up"
     else
         local service_status="down"
     fi
 
-    curl_command ${service_status} "${message}" ${usage} ${BW_ID}
+    curl_command "${service_status}" "${message}" "${usage}" "${BW_ID}"
 }
 
-# curl_command <service_status> "<message>" <ping> <uptimekuma_id>
-curl_command() {
+# curl_command "<service_status>" "<message>" <ping> <uptimekuma_id>
+function curl_command() {
     curl \
         --get \
         --data-urlencode "status=${1}" \
@@ -77,6 +81,10 @@ curl_command() {
         > /dev/null
 }
 
-bw_status
-df_status
-tailscale_status
+function main() {
+    bw_status
+    df_status
+    tailscale_status
+}
+
+main "$@"
