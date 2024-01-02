@@ -77,7 +77,7 @@ function bandwidth_status() {
     if [[ ${monthly_bw_usage} -gt 900 ]]; then bw_url=${bw_url}/fail; fi
     
     status="Bandwidth used: ${monthly_bw_usage} GB"
-    curl_command "${status}" "${bw_url}"
+    systemctl is-active vnstat && curl_command "${status}" "${bw_url}"
 }
 
 #######################################
