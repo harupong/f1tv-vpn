@@ -1,0 +1,25 @@
+[private]
+@default:
+    echo "Usage: just <recipe>"
+    echo ""
+    just --list
+
+# deploy all servers
+[no-cd]
+deploy:
+  ansible-playbook -i inventory.yml playbook/deploy_nodes.yml
+
+# deploy single server
+[no-cd]
+deploy-single ID:
+  ansible-playbook -i inventory.yml -l {{ID}} playbook/deploy_nodes.yml
+
+# backup all servers
+[no-cd]
+backup:
+  ansible-playbook -i inventory.yml playbook/backup.yml
+
+# backup single server
+[no-cd]
+backup-single ID:
+  ansible-playbook -i inventory.yml -l {{ID}} playbook/backup.yml
