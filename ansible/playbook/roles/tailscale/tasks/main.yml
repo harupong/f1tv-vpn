@@ -5,6 +5,15 @@
   become: yes
   when: inventory_hostname in groups['openvz']
 
+# https://github.com/artis3n/ansible-role-tailscale/issues/487
+- name: Enable IPv4 forwarding
+  ansible.posix.sysctl: { name: net.ipv4.ip_forward, value: 1 }
+  become: yes
+
+- name: Enable IPv6 forwarding
+  ansible.posix.sysctl: { name: net.ipv6.conf.all.forwarding, value: 1 }
+  become: yes
+
 - name: is tailscale conf file available?
   delegate_to: localhost
   ansible.builtin.stat:

@@ -1,15 +1,11 @@
-name: f1vpn_node
 services:
-  vnstat:
-    image: vergoh/vnstat:latest
-    container_name: vnstat
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
     restart: unless-stopped
     network_mode: host
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-      - /var/lib/vnstat:/var/lib/vnstat
-      - ./vnstat.conf:/etc/vnstat.conf
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - HTTP_PORT=0
-
+      PORT: 45876
+      KEY: ${BESZEL_SSH_PUBKEY}

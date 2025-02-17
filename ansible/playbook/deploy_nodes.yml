@@ -5,7 +5,7 @@
   - name: Ensure that all necessary environment variables are loaded
     ansible.builtin.assert:
       that:
-        - tailscale_authkey | length > 0
+        - tailscale_key | length > 0
         - new_username | length > 0
       fail_msg: "run `source ./.env` and load environment variables"
 
@@ -18,7 +18,6 @@
   hosts: all
   vars:
     tailscale_conf_path: "{{ lookup('env', 'PWD') }}/tailscale-conf-{{ inventory_hostname }}.tar.gz"
-    vnstat_conf_path: "{{ lookup('env', 'PWD') }}/vnstat-conf-{{ inventory_hostname }}.tar.gz"
 
   roles:
     - role: geerlingguy.docker
@@ -27,12 +26,10 @@
     - role: tailscale
     - role: artis3n.tailscale
       vars:
-        tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
+        tailscale_authkey: "{{ tailscale_key }}"
         tailscale_args: "--ssh --advertise-exit-node"
         ansible_become: yes
-    - role: vnstat
     - role: docker
-    - role: cron
     - role: geerlingguy.firewall
       vars:
         firewall_allowed_tcp_ports:
